@@ -14,5 +14,28 @@ module.exports = {
       console.error("Todos not found in localStorage");
     }
     return (Array.isArray(todos)) ? todos : [];
+  },
+  filterTodos: function(todos, showCompleted, searchText) {
+    var filteredTodos = todos;
+    filteredTodos = filteredTodos.filter((todo) => {
+      return !todo.completed || showCompleted;
+    });
+
+    if(searchText && searchText !== '') {
+      filteredTodos = filteredTodos.filter((todo) => {
+        return todo.text.toLowerCase().includes(searchText);
+      });
+    }
+
+    filteredTodos.sort((a,b) => {
+      if(!a.completed && b.completed) {
+        return -1
+      } else if(a.completed && !b.completed) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return filteredTodos;
   }
 }
